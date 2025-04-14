@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -73,4 +74,7 @@ dependencies {
 
     // DataStore
     implementation(libs.datastore.preferences)
+
+    // serialization
+    implementation(libs.kotlinx.serialization.json)
 }
