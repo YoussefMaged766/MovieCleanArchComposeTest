@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.devYoussef.cleanarchtest.presentation.ui.IntroScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SplashScreen
 
 @Composable
@@ -13,10 +14,10 @@ fun App(mainNavController: NavHostController) {
         startDestination = Screens.SplashScreen
     ) {
         composable<Screens.SplashScreen> {
-            SplashScreen()
+            SplashScreen(mainNavController = mainNavController)
         }
         composable<Screens.IntroScreen> {
-
+            IntroScreen(mainNavController = mainNavController)
         }
     }
 
