@@ -26,6 +26,7 @@ navigationRuntimeKtx = "2.8.9"
 datastore = "1.1.4"
 serialization = "1.6.3"
 
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

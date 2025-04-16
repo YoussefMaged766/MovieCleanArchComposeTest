@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -106,16 +108,15 @@ fun SplashScreen(modifier: Modifier = Modifier, mainNavController: NavController
                         .rotate(rotateAnim)
                 )
 
-                Text(
-                    text = "AFLAMY.CO",
-                    fontFamily = FontFamily.Monospace,
+                Image(
+                    painter = painterResource(R.drawable.img_logo_text),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color.White),
                     modifier = modifier
-                        .padding(top = 18.dp)
-                        .alpha(alpha = alpha.value),
-                    color = Color.White,
-                    style = androidx.compose.material3.MaterialTheme.typography.headlineLarge,
-                    fontSize = 48.sp
-
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .alpha(alpha = alpha.value)
+                        .padding(top = 12.dp),
                 )
             }
 
