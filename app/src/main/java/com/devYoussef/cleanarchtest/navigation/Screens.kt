@@ -9,4 +9,10 @@ sealed class Screens {
 
     @Serializable
     data object IntroScreen : Screens()
+
+    @Serializable
+    data object OnBoardingScreen : Screens()
+
+    @Serializable
+    data object GetStartedScreen : Screens()
 }

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
+import com.devYoussef.cleanarchtest.navigation.Screens
 
 @Composable
 fun IntroScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
@@ -117,7 +118,9 @@ fun IntroScreen(modifier: Modifier = Modifier, mainNavController: NavController)
                             contentColor = Color.White
                         ),
                         shape = RoundedCornerShape(22.dp),
-                        onClick = {}
+                        onClick = {
+                            mainNavController.navigate(Screens.OnBoardingScreen)
+                        }
                     ) {
                         Text(
                             text = "Get Started",
