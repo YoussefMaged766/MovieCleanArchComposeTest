@@ -1,6 +1,8 @@
 package com.devYoussef.cleanarchtest.presentation
 
 
+
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -13,7 +15,6 @@ import com.devYoussef.cleanarchtest.presentation.theme.CleanArchTestTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 scrim = getColor(R.color.status_bar),
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 darkScrim = getColor(R.color.status_bar),
             )
         )
+        super.onCreate(savedInstanceState)
         setContent {
             CleanArchTestTheme {
                 App(rememberNavController())
@@ -31,3 +33,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

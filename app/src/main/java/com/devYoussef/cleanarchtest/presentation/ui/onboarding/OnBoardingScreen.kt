@@ -29,6 +29,7 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -105,119 +106,124 @@ fun OnBoardingPager(
     onNextClick: () -> Unit = {}
 
 ) {
+    Scaffold { innerPadding ->
 
-    HorizontalPager(
-        state = state,
-        userScrollEnabled = false
-    ) { page ->
+        HorizontalPager(
+            state = state,
+            userScrollEnabled = false
+        ) { page ->
 
-        val currentPageOffset = (
-                (state.currentPage - page) + state.currentPageOffsetFraction
-                ).absoluteValue
+            val currentPageOffset = (
+                    (state.currentPage - page) + state.currentPageOffsetFraction
+                    ).absoluteValue
 
-        // Fade only current/nearby page, 0 = fully visible, 1+ = invisible
-        val alpha = 1f - currentPageOffset.coerceIn(0f, 1f)
+            // Fade only current/nearby page, 0 = fully visible, 1+ = invisible
+            val alpha = 1f - currentPageOffset.coerceIn(0f, 1f)
 
-        Box(
-            modifier = modifier
-        ) {
-
-            Image(
-                painter = painterResource(items[page].image),
+            Box(
                 modifier = modifier
-                    .fillMaxSize()
-//                    .graphicsLayer(alpha = alpha)
-                ,
-                contentScale = ContentScale.Crop,
-                contentDescription = null
-            )
-            OverLay(modifier = modifier)
-
-        }
-    }
-
-    Box(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.3f)
-                .align(Alignment.BottomCenter),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            Image(
-                painter = painterResource(R.drawable.img_logo_text),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(Color(0xffFF8800)),
-                modifier = Modifier.size(width = 160.dp, height = 40.dp)
-            )
-
-            Spacer(modifier = Modifier.height(18.dp))
-
-            Text(
-                text = items[state.currentPage].desc,
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.White,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(resId = R.font.poppins_regular))
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            PageIndicator(currentPage = state.currentPage, items = items)
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
             ) {
-                TextButton(
-                    onClick = {
-                        coroutineScope.launch { // Launch a coroutine
-                            if (state.currentPage > 0) {
-                                state.animateScrollToPage(state.currentPage - 1)
+
+                Image(
+                    painter = painterResource(items[page].image),
+                    modifier = modifier
+                        .fillMaxSize()
+//                    .graphicsLayer(alpha = alpha)
+                    ,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null
+                )
+                OverLay(modifier = modifier)
+
+            }
+        }
+
+        Box(modifier = modifier) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(innerPadding)
+                    .padding(bottom = 30.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.img_logo_text),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color(0xffFF8800)),
+                    modifier = Modifier.size(width = 160.dp, height = 40.dp)
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Text(
+                    text = items[state.currentPage].desc,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(Font(resId = R.font.poppins_regular))
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                PageIndicator(currentPage = state.currentPage, items = items)
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(
+                        onClick = {
+                            coroutineScope.launch { // Launch a coroutine
+                                if (state.currentPage > 0) {
+                                    state.animateScrollToPage(state.currentPage - 1)
+                                }
                             }
-                        }
-                    },
-                    enabled = state.currentPage > 0,
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-                        contentDescription = null,
-                        tint = if (state.currentPage > 0) Color.White else Color(0xFF6B6B6B)
-                    )
+                        },
+                        enabled = state.currentPage > 0,
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                            contentDescription = null,
+                            tint = if (state.currentPage > 0) Color.White else Color(0xFF6B6B6B)
+                        )
 
-                    Text(
-                        text = "Previous",
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(start = 4.dp),
-                        color = if (state.currentPage > 0) Color.White else Color(0xFF6B6B6B)
-                    )
+                        Text(
+                            text = "Previous",
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding(start = 4.dp),
+                            color = if (state.currentPage > 0) Color.White else Color(0xFF6B6B6B)
+                        )
 
-                }
+                    }
 
-                TextButton(
-                    onClick = {
-                        onNextClick()
-                    },
-                ) {
-                    Text(
-                        text = "Next",
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(start = 4.dp),
-                        color = Color.White
-                    )
+                    TextButton(
+                        onClick = {
+                            onNextClick()
+                        },
+                    ) {
+                        Text(
+                            text = "Next",
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.padding(start = 4.dp),
+                            color = Color.White
+                        )
 
-                    Icon(
-                        Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
+                        Icon(
+                            Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
 
+                    }
                 }
             }
         }
     }
+
+
 
 
 }

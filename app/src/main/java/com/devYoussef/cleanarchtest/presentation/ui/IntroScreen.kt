@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,50 +40,48 @@ import com.devYoussef.cleanarchtest.navigation.Screens
 
 @Composable
 fun IntroScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
-
-    Box(
-        modifier = modifier.fillMaxSize()
-    ) {
-
-        Image(
-            painter = painterResource(R.drawable.img_intro),
-            contentScale = ContentScale.Crop,
-            modifier = modifier.fillMaxSize(),
-            contentDescription = null
-        )
-
+    Scaffold { innerPadding ->
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0x4DFF8800),
-                            Color(0xFF151515),
-                            Color.Transparent,
-                            Color.Transparent,
-                            Color.Transparent,
-                            Color.Transparent,
-                            Color(0xFF151515),
-                        )
-                    )
-                )
-        )
-
-
-
-        Column(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Image(
+                painter = painterResource(R.drawable.img_intro),
+                contentScale = ContentScale.Crop,
+                modifier = modifier.fillMaxSize(),
+                contentDescription = null
+            )
+
             Box(
                 modifier = modifier
-                    .fillMaxHeight(0.3f),
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0x4DFF8800),
+                                Color(0xFF151515),
+                                Color.Transparent,
+                                Color.Transparent,
+                                Color.Transparent,
+                                Color.Transparent,
+                                Color(0xFF151515),
+                            )
+                        )
+                    )
+            )
+
+
+            Box(
+                modifier = modifier,
                 contentAlignment = Alignment.BottomCenter,
             ) {
                 Column(
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(bottom = 40.dp),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
                         painter = painterResource(R.drawable.img_logo_text),
@@ -112,7 +111,8 @@ fun IntroScreen(modifier: Modifier = Modifier, mainNavController: NavController)
                     ElevatedButton(
                         modifier = modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
+                            .padding(innerPadding)
+                            .padding(horizontal =24.dp ),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFFF8800),
                             contentColor = Color.White
@@ -137,6 +137,10 @@ fun IntroScreen(modifier: Modifier = Modifier, mainNavController: NavController)
                 }
 
             }
+
         }
+
     }
+
+
 }
