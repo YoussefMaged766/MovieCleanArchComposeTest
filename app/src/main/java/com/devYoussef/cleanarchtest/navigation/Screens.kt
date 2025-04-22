@@ -15,4 +15,7 @@ sealed class Screens {
 
     @Serializable
     data object GetStartedScreen : Screens()
+
+    @Serializable
+    data object SignInScreen : Screens()
 }

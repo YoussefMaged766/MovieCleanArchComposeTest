@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
+import com.devYoussef.cleanarchtest.navigation.Screens
 
 @Composable
 fun GetStartedScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
@@ -93,7 +94,9 @@ fun GetStartedScreen(modifier: Modifier = Modifier, mainNavController: NavContro
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         ElevatedButton(
-                            onClick = {},
+                            onClick = {
+                                mainNavController.navigate(Screens.SignInScreen)
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(0.5f)
