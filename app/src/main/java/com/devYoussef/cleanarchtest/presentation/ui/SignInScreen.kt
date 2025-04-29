@@ -37,6 +37,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -44,8 +45,7 @@ import com.devYoussef.cleanarchtest.R
 
 @Composable
 fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
-    val emailState = rememberTextFieldState()
-    var emailValueState by remember { mutableStateOf("") }
+    var emailValueState by remember { mutableStateOf(TextFieldValue("")) }
     Scaffold() { innerPadding ->
         Column(
             modifier = modifier
@@ -135,8 +135,8 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                         )
                     ),
                     trailingIcon = {
-                        if (emailValueState.isEmpty()) return@TextField
-                        IconButton(onClick = { emailValueState = "" }) {
+                        if (emailValueState.text.isEmpty()) return@TextField
+                        IconButton(onClick = { emailValueState = TextFieldValue("") }) {
                             Icon(
                                 Icons.Filled.Clear,
                                 contentDescription = null,
