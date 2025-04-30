@@ -1,5 +1,12 @@
 package com.devYoussef.cleanarchtest.presentation.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +48,7 @@ import com.devYoussef.cleanarchtest.navigation.Screens
 
 @Composable
 fun GetStartedScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
-    Scaffold{ innerPadding->
+    Scaffold { innerPadding ->
 
         Box(modifier = Modifier.fillMaxSize()) {
 
@@ -59,83 +66,94 @@ fun GetStartedScreen(modifier: Modifier = Modifier, mainNavController: NavContro
                 modifier = Modifier.padding(innerPadding),
                 contentAlignment = Alignment.BottomCenter,
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.img_logo_text),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(Color(0xffFF8800)),
-                        modifier = modifier
-                            .size(width = 160.dp, height = 40.dp)
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                    )
-
-                    Spacer(modifier = modifier.height(18.dp))
-
-                    Text(
-                        text = "watch your favorite movie or serise on\n" +
-                                "only one platform. you can waych it\n" +
-                                "anytime and anywhere",
-                        modifier = modifier.fillMaxWidth(),
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = FontFamily(Font(resId = R.font.poppins_regular))
-                    )
-
-                    Spacer(modifier = modifier.height(48.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        ElevatedButton(
-                            onClick = {
-                                mainNavController.navigate(Screens.SignInScreen)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.5f)
-                                .padding(start = 20.dp, end = 10.dp),
-                            contentPadding = PaddingValues(vertical = 15.dp),
-                            shape = RoundedCornerShape(22.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFFF8800),
-                                contentColor = Color.White
-                            ),
-                        ) {
-                            Text(text = "Sign in")
-                        }
-
-                        OutlinedButton(
-                            onClick = {},
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.5f)
-                                .padding(end = 20.dp, start = 10.dp),
-                            border = BorderStroke(width = 1.dp, color = Color.White),
-                            shape = RoundedCornerShape(22.dp),
-                            contentPadding = PaddingValues(vertical = 15.dp)
-
-                        ) {
-                            Text(text = "Sign Up", color = Color.White)
-                        }
+                AnimatedContent(
+                    targetState = 100,
+                    transitionSpec = {
+                        fadeIn(animationSpec = tween(300)) + scaleIn(initialScale = 0.8f) togetherWith
+                                fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.8f)
                     }
-                    Spacer(modifier = modifier.height(20.dp))
-                    Text(
-                        text = "Continue as a Guest",
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = FontFamily(Font(resId = R.font.poppins_regular)),
-                        textDecoration = TextDecoration.Underline
-                    )
+                ) { target ->
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.img_logo_text),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(Color(0xffFF8800)),
+                            modifier = modifier
+                                .size(width = 160.dp, height = 40.dp)
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally),
+                        )
+
+                        Spacer(modifier = modifier.height(18.dp))
+
+                        Text(
+                            text = "watch your favorite movie or serise on\n" +
+                                    "only one platform. you can waych it\n" +
+                                    "anytime and anywhere",
+                            modifier = modifier.fillMaxWidth(),
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily(Font(resId = R.font.poppins_regular))
+                        )
+
+                        Spacer(modifier = modifier.height(48.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            ElevatedButton(
+                                onClick = {
+                                    mainNavController.navigate(Screens.SignInScreen)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.5f)
+                                    .padding(start = 20.dp, end = 10.dp),
+                                contentPadding = PaddingValues(vertical = 15.dp),
+                                shape = RoundedCornerShape(22.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFFF8800),
+                                    contentColor = Color.White
+                                ),
+                            ) {
+                                Text(text = "Sign in")
+                            }
+
+                            OutlinedButton(
+                                onClick = {},
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.5f)
+                                    .padding(end = 20.dp, start = 10.dp),
+                                border = BorderStroke(width = 1.dp, color = Color.White),
+                                shape = RoundedCornerShape(22.dp),
+                                contentPadding = PaddingValues(vertical = 15.dp)
+
+                            ) {
+                                Text(text = "Sign Up", color = Color.White)
+                            }
+                        }
+                        Spacer(modifier = modifier.height(20.dp))
+                        Text(
+                            text = "Continue as a Guest",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 20.dp),
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily(Font(resId = R.font.poppins_regular)),
+                            textDecoration = TextDecoration.Underline
+                        )
+                    }
                 }
+
 
             }
         }
