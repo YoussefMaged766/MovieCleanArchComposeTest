@@ -20,6 +20,8 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -41,11 +43,14 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -58,6 +63,11 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
     var emailValueState by remember { mutableStateOf(TextFieldValue("")) }
     var isFocusedEmail by remember { mutableStateOf(false) }
     val focusRequesterEmail = remember { FocusRequester() }
+
+    var isFocusedPassword by remember { mutableStateOf(false) }
+    val focusRequesterPassword = remember { FocusRequester() }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var passwordValueState by remember { mutableStateOf(TextFieldValue("")) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold() { innerPadding ->
@@ -79,13 +89,14 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                 Text(
                     text = "Welcome back!",
                     color = Color.White,
-                    fontSize = 24.sp,
+                    fontSize = 32.sp,
                     fontFamily = FontFamily(
                         Font(resId = R.font.poppins_medium)
                     )
                 )
                 Text(
                     text = "Please sign in to your account",
+                    modifier = Modifier.padding(top = 12.dp),
                     color = Color(0xFF898989),
                     fontSize = 16.sp,
                     fontFamily = FontFamily(
@@ -94,6 +105,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                 )
             }
 
+            // email text field
             Row(
                 modifier = Modifier
                     .padding(start = 20.dp, end = 20.dp, top = 100.dp)
@@ -109,14 +121,16 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                     modifier = Modifier
                         .padding(16.dp, vertical = 20.dp)
                         .align(Alignment.CenterVertically),
-                    tint = if (isFocusedEmail) Color.White else Color(0xFF828282)
+                    tint = if (isFocusedEmail || emailValueState.text.isNotEmpty()) Color.White else colorResource(
+                        id = R.color.grey
+                    )
                 )
                 VerticalDivider(
                     modifier = Modifier
                         .fillMaxHeight() // Now it fills height of Row, which is based on content
                         .width(1.dp)
                         .padding(vertical = 20.dp),
-                    color = Color(0xFF828282)
+                    color = colorResource(id = R.color.grey)
                 )
 
                 TextField(
@@ -132,7 +146,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                     placeholder = {
                         Text(
                             text = "Email",
-                            color = Color(0xFF828282),
+                            color = colorResource(id = R.color.grey),
                             fontSize = 16.sp,
                             fontFamily = FontFamily(
                                 Font(resId = R.font.poppins_regular)
@@ -158,14 +172,105 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                     ),
                     trailingIcon = {
                         if (emailValueState.text.isNotEmpty()) {
-                            IconButton(onClick = { emailValueState  = TextFieldValue("")}, content = {
-                                Icon(
-                                    Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = Color.White
-                                )
-                            })
+                            IconButton(
+                                onClick = { emailValueState = TextFieldValue("") },
+                                content = {
+                                    Icon(
+                                        Icons.Filled.Clear,
+                                        contentDescription = null,
+                                        tint = if (isFocusedEmail || emailValueState.text.isNotEmpty()) Color.White else colorResource(
+                                            id = R.color.grey
+                                        )
+                                    )
+                                }
+                            )
                         }
+                    }
+                )
+            }
+
+            // password text field
+            Row(
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp, top = 24.dp)
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(Color(0xFF2B2B2B))
+                    .height(IntrinsicSize.Min) // Makes Row height wrap its content
+                    .fillMaxWidth()
+
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_password),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(16.dp, vertical = 20.dp)
+                        .align(Alignment.CenterVertically),
+                    tint = if (isFocusedPassword || passwordValueState.text.isNotEmpty()) Color.White else colorResource(
+                        R.color.grey
+                    )
+                )
+                VerticalDivider(
+                    modifier = Modifier
+                        .fillMaxHeight() // Now it fills height of Row, which is based on content
+                        .width(1.dp)
+                        .padding(vertical = 20.dp),
+                    color = colorResource(R.color.grey)
+                )
+
+                TextField(
+                    value = passwordValueState,
+                    onValueChange = { passwordValueState = it },
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .fillMaxWidth()
+                        .focusRequester(focusRequesterPassword)
+                        .onFocusChanged { focusState ->
+                            isFocusedPassword = focusState.isFocused
+                        },
+                    placeholder = {
+                        Text(
+                            text = "Password",
+                            color = colorResource(R.color.grey),
+                            fontSize = 16.sp,
+                            fontFamily = FontFamily(
+                                Font(resId = R.font.poppins_regular)
+                            )
+                        )
+                    },
+                    singleLine = true,
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                        keyboardType = KeyboardType.Password
+                    ),
+                    keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    ),
+
+                    textStyle = TextStyle(
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(
+                            Font(resId = R.font.poppins_regular)
+                        )
+                    ),
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { passwordVisible = !passwordVisible },
+                            content = {
+                                Icon(
+                                    if (passwordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                    contentDescription = null,
+                                    tint = if (isFocusedPassword || passwordValueState.text.isNotEmpty()) Color.White else colorResource(
+                                        id = R.color.grey
+                                    )
+                                )
+                            }
+                        )
                     }
                 )
             }

@@ -79,7 +79,7 @@ fun IntroScreen(modifier: Modifier = Modifier, mainNavController: NavController)
                 Column(
                     modifier = modifier
                         .fillMaxSize()
-                        .padding(bottom = 40.dp),
+                        .padding(bottom = 24.dp),
                     verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

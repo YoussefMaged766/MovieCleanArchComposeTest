@@ -81,4 +81,7 @@ dependencies {
     // splash screen api 
     implementation(libs.core.splashscreen)
 
+    // external icons
+    implementation(libs.androidx.material.icons.extended)
+
 }
