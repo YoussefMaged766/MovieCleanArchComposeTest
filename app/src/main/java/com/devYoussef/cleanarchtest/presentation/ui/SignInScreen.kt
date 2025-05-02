@@ -2,18 +2,23 @@ package com.devYoussef.cleanarchtest.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.clearText
@@ -22,6 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -30,6 +37,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,10 +50,15 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -53,10 +66,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
+import com.devYoussef.cleanarchtest.navigation.Screens
 
 @Composable
 fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
@@ -274,6 +289,123 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                     }
                 )
             }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Text(
+                text = "Forgot password?",
+                modifier = Modifier
+                    .padding(end = 20.dp)
+                    .align(Alignment.End),
+                color = Color(0xFF6C6C6C),
+                fontSize = 14.sp,
+                fontFamily = FontFamily(
+                    Font(resId = R.font.poppins_regular)
+                )
+            )
+
+            Spacer(modifier = Modifier.height(80.dp))
+
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp)
+                    .height(68.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.orange),
+                    contentColor = Color.White
+                ),
+            ) {
+                Text(
+                    text = "Sign In",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(
+                        Font(resId = R.font.poppins_medium)
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp)
+                    .height(68.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_google),
+                    contentDescription = "google",
+                    modifier = Modifier.size(44.dp),
+                    tint = Color.Unspecified
+                )
+                Text(
+                    text = "Sign In with Google",
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(
+                        Font(resId = R.font.poppins_medium)
+                    )
+                )
+            }
+            val annotatedString = buildAnnotatedString {
+
+                // Mark the "Sign up" part as clickable
+                withStyle(
+                    style = SpanStyle(
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(
+                            Font(resId = R.font.poppins_regular)
+                        )
+                    )
+                ) {
+                    append("Don't have an account? ")
+                }
+                pushStringAnnotation(tag = "SIGN_UP", annotation = "sign_up")
+                withStyle(
+                    style = SpanStyle(
+                        color = colorResource(R.color.orange),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(
+                            Font(resId = R.font.poppins_regular)
+                        )
+                    )
+                ) {
+                    append("Sign Up")
+                }
+                pop()
+            }
+            var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+            Text(
+                text = annotatedString,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 24.dp)
+                    .pointerInput(Unit) {
+                        detectTapGestures { offset ->
+                            textLayoutResult?.let {
+                                val offset = it.getOffsetForPosition(offset)
+                                annotatedString.getStringAnnotations(
+                                    tag = "SIGN_UP",
+                                    start = offset,
+                                    end = offset
+                                ).firstOrNull()?.let {
+                                    mainNavController.navigate(Screens.SignUpScreen)
+                                }
+                            }
+                        }
+                    },
+                onTextLayout = { textLayoutResult = it }
+            )
         }
     }
 }

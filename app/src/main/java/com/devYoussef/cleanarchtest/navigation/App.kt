@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.devYoussef.cleanarchtest.presentation.ui.GetStartedScreen
 import com.devYoussef.cleanarchtest.presentation.ui.IntroScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SignInScreen
+import com.devYoussef.cleanarchtest.presentation.ui.SignUpScreen
 import com.devYoussef.cleanarchtest.presentation.ui.onboarding.OnBoardingScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SplashScreen
 
@@ -34,6 +35,10 @@ fun App(mainNavController: NavHostController) {
 
         composable<Screens.SignInScreen> {
             SignInScreen(mainNavController = mainNavController)
+        }
+
+        composable<Screens.SignUpScreen> {
+            SignUpScreen(mainNavController = mainNavController)
         }
     }
 

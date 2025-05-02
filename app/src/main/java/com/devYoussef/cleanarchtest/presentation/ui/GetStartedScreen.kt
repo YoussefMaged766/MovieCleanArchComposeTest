@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -118,7 +119,7 @@ fun GetStartedScreen(modifier: Modifier = Modifier, mainNavController: NavContro
                                 contentPadding = PaddingValues(vertical = 15.dp),
                                 shape = RoundedCornerShape(22.dp),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFFF8800),
+                                    containerColor = colorResource(R.color.orange),
                                     contentColor = Color.White
                                 ),
                             ) {
