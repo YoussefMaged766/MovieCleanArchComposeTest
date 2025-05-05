@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.presentation.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,6 +52,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -84,6 +86,8 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
     var passwordVisible by remember { mutableStateOf(false) }
     var passwordValueState by remember { mutableStateOf(TextFieldValue("")) }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val context = LocalContext.current
 
     Scaffold() { innerPadding ->
         Column(
@@ -307,7 +311,13 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
             Spacer(modifier = Modifier.height(80.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    Toast.makeText(
+                        context,
+                        "Sign In button clicked",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
                 modifier = Modifier
                     .padding(start = 20.dp, end = 20.dp)
                     .height(68.dp)
