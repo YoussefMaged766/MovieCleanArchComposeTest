@@ -21,4 +21,10 @@ sealed class Screens {
 
     @Serializable
     data object SignUpScreen : Screens()
+
+    @Serializable
+    data object ForgetPassword : Screens()
+
+    @Serializable
+    data object VerifyPhoneScreen : Screens()
 }

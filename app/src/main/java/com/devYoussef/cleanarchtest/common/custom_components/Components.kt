@@ -2,6 +2,8 @@ package com.devYoussef.cleanarchtest.common.custom_components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,8 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,10 +42,10 @@ fun MovieTopAppBar(
         modifier = modifier,
         title = title,
         navigationIcon = {
-            NavigationIcon()
+            NavigationIcon(mainNavController = mainNavController)
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorResource(R.color.status_bar),
+            containerColor = colorResource(R.color.background),
             titleContentColor = Color.White
         ),
     )
@@ -48,35 +53,36 @@ fun MovieTopAppBar(
 }
 
 @Composable
-fun NavigationIcon(modifier: Modifier = Modifier) {
+fun NavigationIcon(modifier: Modifier = Modifier, mainNavController: NavController) {
 
-    Surface(
+    Box(
         modifier = modifier
-            .background(
-                color = colorResource(R.color.status_bar)
-            ),
-        shape = CircleShape,
-        border = BorderStroke(
-            width = 1.dp, brush = Brush.radialGradient(
-                colors = listOf(
-                    Color(0xff3F3F3F),
-                    Color.Transparent,
-                    Color(0xff3F3F3F)
-                )
+            .size(48.dp)
+            .clip(CircleShape)
+            .border(
+                width = 1.dp, brush = Brush.radialGradient(
+                    colors = listOf(
+                        Color(0xff3F3F3F),
+                        Color.Transparent,
+                        Color(0xff3F3F3F)
+                    )
+                ), shape = CircleShape
             )
-        ),
-        contentColor = colorResource(R.color.status_bar)
+            .background(color = Color(0xff222222))
+            .clickable(
+                onClick = {
+                    mainNavController.popBackStack()
+                }
+            ),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_back_arrow),
             contentDescription = null,
             tint = Color.White,
             modifier = Modifier
-                .size(24.dp)
                 .padding(12.dp)
         )
-
-
     }
 
 }
@@ -84,5 +90,13 @@ fun NavigationIcon(modifier: Modifier = Modifier) {
 @Composable
 @Preview
 fun MovieTopAppBarPreview() {
-    NavigationIcon()
+    MovieTopAppBar(
+        mainNavController = rememberNavController(),
+        title = {
+            Text(
+                text = "Movie Title",
+                color = Color.White
+            )
+        }
+    )
 }

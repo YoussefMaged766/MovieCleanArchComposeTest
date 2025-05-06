@@ -93,7 +93,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFF151515))
+                .background(color = colorResource(R.color.background))
                 .padding(innerPadding),
 
             ) {
@@ -300,7 +300,12 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                 text = "Forgot password?",
                 modifier = Modifier
                     .padding(end = 20.dp)
-                    .align(Alignment.End),
+                    .align(Alignment.End)
+                    .clickable(
+                        onClick = {
+                            mainNavController.navigate(Screens.ForgetPassword)
+                        }
+                    ),
                 color = Color(0xFF6C6C6C),
                 fontSize = 14.sp,
                 fontFamily = FontFamily(

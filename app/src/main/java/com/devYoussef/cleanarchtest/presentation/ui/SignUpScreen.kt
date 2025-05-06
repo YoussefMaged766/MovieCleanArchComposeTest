@@ -43,7 +43,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, mainNavController: NavController
             text = "alo",
             modifier = modifier
                 .fillMaxSize()
-                .background(color = colorResource(R.color.status_bar))
+                .background(color = colorResource(R.color.background))
                 .padding(innerPadding)
         )
 
