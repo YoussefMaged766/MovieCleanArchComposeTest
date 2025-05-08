@@ -26,5 +26,5 @@ sealed class Screens {
     data object ForgetPassword : Screens()
 
     @Serializable
-    data object VerifyPhoneScreen : Screens()
+    data class VerifyPhoneScreen(val phone : String) : Screens()
 }

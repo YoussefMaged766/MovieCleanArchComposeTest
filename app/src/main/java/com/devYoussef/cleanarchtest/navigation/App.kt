@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.devYoussef.cleanarchtest.presentation.ui.ForgetPasswordScreen
 import com.devYoussef.cleanarchtest.presentation.ui.GetStartedScreen
 import com.devYoussef.cleanarchtest.presentation.ui.IntroScreen
@@ -18,7 +19,8 @@ import com.devYoussef.cleanarchtest.presentation.ui.VerifyPhoneScreen
 fun App(mainNavController: NavHostController) {
     NavHost(
         navController = mainNavController,
-        startDestination = Screens.SplashScreen
+        startDestination = Screens.SplashScreen,
+
     ) {
         composable<Screens.SplashScreen> {
             SplashScreen(mainNavController = mainNavController)
@@ -44,11 +46,16 @@ fun App(mainNavController: NavHostController) {
         }
 
         composable<Screens.ForgetPassword> {
-            ForgetPasswordScreen(mainNavController = mainNavController)
+            ForgetPasswordScreen(mainNavController = mainNavController ,
+                onNavigateToVerifyPhone = {phone->
+                    mainNavController.navigate(Screens.VerifyPhoneScreen(phone = phone))
+                }
+            )
         }
 
-        composable<Screens.VerifyPhoneScreen> {
-             VerifyPhoneScreen(mainNavController = mainNavController)
+        composable<Screens.VerifyPhoneScreen> { backStackEntry ->
+            val args : Screens.VerifyPhoneScreen  = backStackEntry.toRoute()
+             VerifyPhoneScreen(mainNavController = mainNavController , phone = args.phone)
         }
     }
 

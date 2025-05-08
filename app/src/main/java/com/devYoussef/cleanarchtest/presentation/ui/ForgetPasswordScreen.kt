@@ -65,7 +65,7 @@ import com.devYoussef.cleanarchtest.navigation.Screens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ForgetPasswordScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
+fun ForgetPasswordScreen(modifier: Modifier = Modifier, onNavigateToVerifyPhone : (String) -> Unit = {} , mainNavController: NavController) {
 
     var phoneValueState by remember { mutableStateOf(TextFieldValue(text = "")) }
     var isFocusedPhone by remember { mutableStateOf(false) }
@@ -204,7 +204,9 @@ fun ForgetPasswordScreen(modifier: Modifier = Modifier, mainNavController: NavCo
             Button(
                 onClick = {
                     if (phoneValidation(phoneValueState.text))
-                        mainNavController.navigate(Screens.VerifyPhoneScreen)
+                        onNavigateToVerifyPhone(phoneValueState.text)
+                    else
+                        phoneError = true
                 },
                 modifier = Modifier
                     .padding(
