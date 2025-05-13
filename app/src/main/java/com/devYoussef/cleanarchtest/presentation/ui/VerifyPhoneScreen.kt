@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.presentation.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +13,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +44,11 @@ fun VerifyPhoneScreen(
     var otpState by remember { mutableStateOf(TextFieldValue(text = "")) }
     val focusStates = remember { mutableStateListOf(false, false, false, false, false) }
     val keyboardController = LocalSoftwareKeyboardController.current
+    var selectedIndex by  remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(selectedIndex) {
+        Log.e( "VerifyPhoneScreen: ", selectedIndex.toString())
+    }
 
     Scaffold(
         topBar = {
@@ -64,7 +72,15 @@ fun VerifyPhoneScreen(
         ) {
             BasicTextField(
                 value = otpState,
-                onValueChange = { otpState = it },
+                onValueChange = {
+                    if (it.text.length <= 5) {
+                        otpState = it
+                        selectedIndex =  maxOf(it.text.length - 1, 0)
+                        if (it.text.length == 5) {
+                            keyboardController?.hide()
+                        }
+                    }
+                },
                 modifier = modifier
                     .align(
                         alignment = Alignment.Center
@@ -85,13 +101,15 @@ fun VerifyPhoneScreen(
                                 modifier = modifier
                                     .border(
                                         width = 2.dp,
-                                        color = if (focusStates[index]) colorResource(R.color.orange) else Color(0xFF6E6E6E),
+                                        color = if (index == selectedIndex) colorResource(R.color.orange) else Color(
+                                            0xFF6E6E6E
+                                        ),
                                         shape = RoundedCornerShape(10.dp)
                                     )
                                     .padding(20.dp)
                                     .onFocusChanged {
-                                    focusStates[index] = it.isFocused
-                                }
+                                        focusStates[selectedIndex] = it.isFocused
+                                    }
                             ) {
                                 Text(
                                     text = number.toString(),
