@@ -27,4 +27,7 @@ sealed class Screens {
 
     @Serializable
     data class VerifyPhoneScreen(val phone : String) : Screens()
+
+    @Serializable
+    data object MainScreen : Screens()
 }

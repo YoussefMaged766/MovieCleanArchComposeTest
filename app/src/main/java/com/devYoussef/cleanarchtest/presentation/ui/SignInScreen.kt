@@ -317,11 +317,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
 
             Button(
                 onClick = {
-                    Toast.makeText(
-                        context,
-                        "Sign In button clicked",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                   mainNavController.navigate(Screens.MainScreen)
                 },
                 modifier = Modifier
                     .padding(start = 20.dp, end = 20.dp)
