@@ -6,8 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.devYoussef.cleanarchtest.presentation.ui.ExploreScreen
 import com.devYoussef.cleanarchtest.presentation.ui.ForgetPasswordScreen
 import com.devYoussef.cleanarchtest.presentation.ui.GetStartedScreen
+import com.devYoussef.cleanarchtest.presentation.ui.HomeScreen
 import com.devYoussef.cleanarchtest.presentation.ui.main.MainScreen
 import com.devYoussef.cleanarchtest.presentation.ui.IntroScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SignInScreen
@@ -47,20 +49,29 @@ fun App(mainNavController: NavHostController) {
         }
 
         composable<Screens.ForgetPassword> {
-            ForgetPasswordScreen(mainNavController = mainNavController ,
-                onNavigateToVerifyPhone = {phone->
+            ForgetPasswordScreen(
+                mainNavController = mainNavController,
+                onNavigateToVerifyPhone = { phone ->
                     mainNavController.navigate(Screens.VerifyPhoneScreen(phone = phone))
                 }
             )
         }
 
         composable<Screens.VerifyPhoneScreen> { backStackEntry ->
-            val args : Screens.VerifyPhoneScreen  = backStackEntry.toRoute()
-             VerifyPhoneScreen(mainNavController = mainNavController , phone = args.phone)
+            val args: Screens.VerifyPhoneScreen = backStackEntry.toRoute()
+            VerifyPhoneScreen(mainNavController = mainNavController, phone = args.phone)
         }
 
         composable<Screens.MainScreen> {
             MainScreen(mainNavController = mainNavController)
+        }
+
+        composable<Screens.HomeScreen> {
+            HomeScreen(mainNavController = mainNavController)
+        }
+
+        composable<Screens.ExploreScreen> {
+            ExploreScreen(mainNavController = mainNavController)
         }
     }
 

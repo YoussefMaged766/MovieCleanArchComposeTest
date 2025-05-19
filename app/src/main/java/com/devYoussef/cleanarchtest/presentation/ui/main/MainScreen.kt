@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.presentation.ui.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -51,13 +52,13 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
             title = "Home",
             icon = R.drawable.ic_home,
             route = Screens.MainScreen,
-            screen = { HomeScreen() }
+            screen = { HomeScreen(mainNavController = mainNavController) }
         ),
         MainNavigationData(
             title = "Explore",
             icon = R.drawable.ic_explore,
             route = Screens.MainScreen,
-            screen = { ExploreScreen() }
+            screen = { ExploreScreen(mainNavController = mainNavController) }
         ),
         MainNavigationData(
             title = "Saved",
@@ -75,6 +76,10 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
     )
 
     var selectedItem by remember { mutableIntStateOf(0) }
+
+    BackHandler(enabled = selectedItem != 0) {
+        selectedItem = 0
+    }
 
     Scaffold(
         bottomBar = {
@@ -102,7 +107,6 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
                                 }
                             )
                         }
-
                     }
                 }
             }

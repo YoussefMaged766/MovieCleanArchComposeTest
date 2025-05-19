@@ -30,4 +30,10 @@ sealed class Screens {
 
     @Serializable
     data object MainScreen : Screens()
+
+    @Serializable
+    data object HomeScreen : Screens()
+
+    @Serializable
+    data object ExploreScreen : Screens()
 }

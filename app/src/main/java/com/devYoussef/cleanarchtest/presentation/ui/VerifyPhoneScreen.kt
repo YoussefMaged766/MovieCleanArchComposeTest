@@ -113,7 +113,7 @@ fun VerifyPhoneScreen(
             BasicTextField(
                 value = otpState,
                 onValueChange = {
-                    if (it.text.length <= 5) {
+                    if (it.text.length <= 5 && it.text.all { char -> char.isDigit() }) {
                         otpState = it
                         selectedIndex = maxOf(it.text.length - 1, 0)
                         if (it.text.length == 5) {

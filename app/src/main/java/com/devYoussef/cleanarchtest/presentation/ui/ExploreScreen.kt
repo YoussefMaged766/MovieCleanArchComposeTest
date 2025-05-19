@@ -9,10 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
 
 @Composable
-fun ExploreScreen(modifier: Modifier = Modifier) {
+fun ExploreScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
     Box(
         modifier = modifier
             .fillMaxSize()
