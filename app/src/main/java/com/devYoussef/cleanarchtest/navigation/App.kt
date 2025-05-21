@@ -23,7 +23,6 @@ fun App(mainNavController: NavHostController) {
     NavHost(
         navController = mainNavController,
         startDestination = Screens.SplashScreen,
-
     ) {
         composable<Screens.SplashScreen> {
             SplashScreen(mainNavController = mainNavController)
