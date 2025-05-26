@@ -1,5 +1,7 @@
 package com.devYoussef.cleanarchtest.domain.repository.remote
 
+import com.devYoussef.cleanarchtest.common.model.state.Status
+import kotlinx.coroutines.flow.Flow
 import java.io.File
 import java.lang.reflect.Type
 
@@ -9,7 +11,7 @@ interface IRestApiNetworkProvider {
         headers: Map<String, Any>? = null,
         queryParams: Map<String, Any>? = null,
         responseType: Type
-    ): ResponseBody
+    ): Flow<Status<ResponseBody>>
 
     suspend fun <RequestBody, ResponseBody> post(
         pathUrl: String,
@@ -17,7 +19,7 @@ interface IRestApiNetworkProvider {
         queryParams: Map<String, Any>? = null,
         requestBody: RequestBody? = null,
         responseType: Type
-    ): ResponseBody
+    ): Flow<Status<ResponseBody>>
 
     suspend fun <RequestBody, ResponseBody> put(
         pathUrl: String,
@@ -25,14 +27,14 @@ interface IRestApiNetworkProvider {
         queryParams: Map<String, Any>? = null,
         requestBody: RequestBody? = null,
         responseType: Type
-    ): ResponseBody
+    ): Flow<Status<ResponseBody>>
 
     suspend fun <ResponseBody> delete(
         pathUrl: String,
         headers: Map<String, Any>? = null,
         queryParams: Map<String, Any>? = null,
         responseType: Type,
-    ): ResponseBody
+    ): Flow<Status<ResponseBody>>
 
     suspend fun <ResponseBody> postWithFiles(
         pathUrl: String,
@@ -41,5 +43,5 @@ interface IRestApiNetworkProvider {
         requestBody: Map<String, Any>? = null,
         files: Map<String, List<File>>? = null,
         responseType: Type
-    ): ResponseBody
+    ): Flow<Status<ResponseBody>>
 }
