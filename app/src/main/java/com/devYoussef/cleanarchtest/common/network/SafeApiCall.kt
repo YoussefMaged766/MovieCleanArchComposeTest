@@ -1,11 +1,9 @@
-package com.devYoussef.cleanarchtest.data.repository
+package com.devYoussef.cleanarchtest.common.network
 
 import com.devYoussef.cleanarchtest.common.extentions.fromJson
 import com.devYoussef.cleanarchtest.common.model.exception.HandleExceptions
 import com.devYoussef.cleanarchtest.common.model.response.ErrorResponse
 import com.devYoussef.cleanarchtest.common.model.state.Status
-import com.devYoussef.cleanarchtest.data.remote.ApiService
-import com.devYoussef.cleanarchtest.domain.repository.remote.IRestApiNetworkProvider
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -14,69 +12,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retryWhen
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.io.File
 import java.lang.reflect.Type
 import java.net.HttpURLConnection
-
-class RetrofitRestApiNetworkProviderImpl(private val apiService: ApiService) :
-    IRestApiNetworkProvider {
-    override suspend fun <ResponseBody> get(
-        pathUrl: String,
-        headers: Map<String, Any>?,
-        queryParams: Map<String, Any>?,
-        responseType: Type
-    ): Flow<Status<ResponseBody>> = safeApiCall(
-        apiCall = {
-            apiService.get(
-                pathUrl = pathUrl,
-                headers = headers ?: mapOf(),
-                queryParams = queryParams ?: mapOf()
-            )
-        },
-        responseType = responseType
-    )
-
-
-    override suspend fun <RequestBody, ResponseBody> post(
-        pathUrl: String,
-        headers: Map<String, Any>?,
-        queryParams: Map<String, Any>?,
-        requestBody: RequestBody?,
-        responseType: Type
-    ): Flow<Status<ResponseBody>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun <RequestBody, ResponseBody> put(
-        pathUrl: String,
-        headers: Map<String, Any>?,
-        queryParams: Map<String, Any>?,
-        requestBody: RequestBody?,
-        responseType: Type
-    ): Flow<Status<ResponseBody>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun <ResponseBody> delete(
-        pathUrl: String,
-        headers: Map<String, Any>?,
-        queryParams: Map<String, Any>?,
-        responseType: Type
-    ): Flow<Status<ResponseBody>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun <ResponseBody> postWithFiles(
-        pathUrl: String,
-        headers: Map<String, Any>?,
-        queryParams: Map<String, Any>?,
-        requestBody: Map<String, Any>?,
-        files: Map<String, List<File>>?,
-        responseType: Type
-    ): Flow<Status<ResponseBody>> {
-        TODO("Not yet implemented")
-    }
-}
 
 inline fun <reified T> safeApiCall(
     crossinline apiCall: suspend () -> Response<ResponseBody>,
