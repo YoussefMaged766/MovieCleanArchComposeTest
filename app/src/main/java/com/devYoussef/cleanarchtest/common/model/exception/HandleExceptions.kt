@@ -1,6 +1,7 @@
 package com.devYoussef.cleanarchtest.common.model.exception
 
 import androidx.annotation.StringRes
+import com.devYoussef.cleanarchtest.R
 
 sealed class HandleExceptions(@StringRes open val messageRes: Int? = null, message: String?) :
     Exception(message) {

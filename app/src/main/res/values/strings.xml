@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CleanArchTest</string>
+    <string name="error_timeout"> Timeout occurred</string>
+    <string name="error_unknown_host"> Unknown host</string>
+    <string name="error_retryable_server"> Retryable server error</string>
+    <string name="error_non_retryable_server"> Non-retryable server error</string>
+    <string name="error_unauthorized_access"> Unauthorized access</string>
+    <string name="error_not_found"> Not found</string>
 </resources>

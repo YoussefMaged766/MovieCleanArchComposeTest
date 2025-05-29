@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "21"
     }
     buildFeatures {
         compose = true
@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     // Dagger Hilt
     implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
     //logging-interceptor
     implementation(libs.logging.interceptor)
     //navigation

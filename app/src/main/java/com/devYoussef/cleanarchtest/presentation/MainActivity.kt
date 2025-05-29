@@ -14,11 +14,13 @@ import androidx.navigation.compose.rememberNavController
 import com.devYoussef.cleanarchtest.R
 import com.devYoussef.cleanarchtest.navigation.App
 import com.devYoussef.cleanarchtest.presentation.theme.CleanArchTestTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
