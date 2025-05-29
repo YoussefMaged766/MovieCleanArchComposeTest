@@ -47,7 +47,7 @@ import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
 import com.devYoussef.cleanarchtest.navigation.Screens
 import com.devYoussef.cleanarchtest.presentation.ui.ExploreScreen
-import com.devYoussef.cleanarchtest.presentation.ui.HomeScreen
+import com.devYoussef.cleanarchtest.presentation.ui.home.HomeScreen
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) {

@@ -16,7 +16,7 @@ import java.lang.reflect.Type
 import java.net.HttpURLConnection
 
 inline fun <reified T> safeApiCall(
-    crossinline apiCall: suspend () -> Response<ResponseBody>,
+    crossinline apiCall: suspend () -> Response<T>,
     responseType: Type,
     retryCount: Int = 3
 ): Flow<Status<T>> = flow {
@@ -30,7 +30,7 @@ inline fun <reified T> safeApiCall(
                 errorMessage = "Response body is null"
             )
 
-        val parsed = body.string().fromJson<T>(responseType)
+        val parsed = Gson().toJson(body).fromJson<T>(responseType)
         emit(Status.Success(parsed))
     } else {
         val errorBody = response.errorBody()?.string()

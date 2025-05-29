@@ -9,7 +9,7 @@ import androidx.navigation.toRoute
 import com.devYoussef.cleanarchtest.presentation.ui.ExploreScreen
 import com.devYoussef.cleanarchtest.presentation.ui.ForgetPasswordScreen
 import com.devYoussef.cleanarchtest.presentation.ui.GetStartedScreen
-import com.devYoussef.cleanarchtest.presentation.ui.HomeScreen
+import com.devYoussef.cleanarchtest.presentation.ui.home.HomeScreen
 import com.devYoussef.cleanarchtest.presentation.ui.main.MainScreen
 import com.devYoussef.cleanarchtest.presentation.ui.IntroScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SignInScreen
