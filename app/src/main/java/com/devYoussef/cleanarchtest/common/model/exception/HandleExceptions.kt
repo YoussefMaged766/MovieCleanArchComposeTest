@@ -17,7 +17,7 @@ sealed class HandleExceptions(@StringRes open val messageRes: Int? = null, messa
         fun getRetryDelay(): Long  // Time in milliseconds
     }
 
-    // Network-related exceptions
+    // Network-related exceptionss
     sealed class Network(
         @StringRes messageRes: Int? = null,
         message: String?

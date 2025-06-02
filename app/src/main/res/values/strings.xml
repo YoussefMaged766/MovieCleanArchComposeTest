@@ -6,4 +6,8 @@
     <string name="error_non_retryable_server"> Non-retryable server error</string>
     <string name="error_unauthorized_access"> Unauthorized access</string>
     <string name="error_not_found"> Not found</string>
+    <string name="retry">retry</string>
+    <string name="unknown_error">unknown Error</string>
+    <string name="no_internet_connection">no internet connection</string>
+    <string name="login">login</string>
 </resources>

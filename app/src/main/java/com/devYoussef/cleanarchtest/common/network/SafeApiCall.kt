@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.common.network
 
+import android.util.Log
 import com.devYoussef.cleanarchtest.common.extentions.fromJson
 import com.devYoussef.cleanarchtest.common.model.exception.HandleExceptions
 import com.devYoussef.cleanarchtest.common.model.response.ErrorResponse
@@ -61,7 +62,10 @@ inline fun <reified T> safeApiCall(
         }
     }
 }.retryWhen { cause, attempt ->
+    Log.e("safeApiCall: ", "Retry attempt: $attempt")
+    Log.e("safeApiCall: ", (cause as? HandleExceptions)?.isRetryable().toString())
     if ((cause as? HandleExceptions)?.isRetryable() == true && attempt < retryCount) {
+
         val retryDelay = (cause as? HandleExceptions.Retryable)?.getRetryDelay() ?: 1000L
         delay(retryDelay)
         true
@@ -69,5 +73,12 @@ inline fun <reified T> safeApiCall(
         false
     }
 }.catch { e ->
-    emit(Status.Failure(HandleExceptions.UnknownException(e.message ?: "Unknown error")))
+    emit(
+        Status.Failure(
+            HandleExceptions.Network.UnknownHost(
+                errorMessage = e.message ?: "Unknown error"
+            )
+        )
+    )
+
 }

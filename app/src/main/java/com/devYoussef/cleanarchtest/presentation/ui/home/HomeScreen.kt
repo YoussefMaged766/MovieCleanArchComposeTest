@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
+import com.devYoussef.cleanarchtest.presentation.ui.base.BaseScreen
 
 @Composable
 fun HomeScreen(
@@ -23,13 +24,23 @@ fun HomeScreen(
     mainNavController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    BaseScreen(
+        modifier = modifier,
+        viewModel = viewModel,
+        onRetry = {viewModel.fetchHomeMovies()},
 
 
-    LaunchedEffect(true) {
-        viewModel.homeState.collect {
-            Log.e("HomeScreen: ", it.toString())
-        }
+    ){data->
+        Log.e("HomeScreen: ", "Data received: $data")
+        // Handle the data received from the ViewModel
+
     }
+
+//    LaunchedEffect(true) {
+//        viewModel.state.collect {
+//            Log.e("HomeScreen: ", it.toString())
+//        }
+//    }
 
     Box(
         modifier = modifier
