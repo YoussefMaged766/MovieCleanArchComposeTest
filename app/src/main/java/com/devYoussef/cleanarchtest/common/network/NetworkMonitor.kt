@@ -4,6 +4,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.util.Log
 
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -21,10 +22,12 @@ class ConnectivityManagerNetworkMonitor @Inject constructor(
     override val isOnline: Flow<Boolean> = callbackFlow {
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
+                Log.e( "onAvailable: ","avaliable" )
                 trySend(true)
             }
 
             override fun onLost(network: Network) {
+                Log.e( "onLost: ","onLost" )
                 trySend(false)
             }
         }
@@ -39,4 +42,6 @@ class ConnectivityManagerNetworkMonitor @Inject constructor(
             connectivityManager.unregisterNetworkCallback(callback)
         }
     }.distinctUntilChanged()
+
+
 }

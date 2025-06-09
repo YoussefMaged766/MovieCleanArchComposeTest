@@ -1,4 +1,4 @@
-package com.devYoussef.cleanarchtest.domain.source
+package com.devYoussef.cleanarchtest.data.remote.source
 
 import com.devYoussef.cleanarchtest.data.dto.MovieResponseDto
 import retrofit2.Response

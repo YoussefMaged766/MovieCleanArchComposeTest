@@ -107,7 +107,7 @@ fun HandleException(
     isOnline: Boolean
 ) {
 //    val isOnline = viewModel.networkMonitor.isOnline.collectAsState(initial = true).value
-    LaunchedEffect(exception) {
+    LaunchedEffect(isOnline) {
         Log.e("HandleException: ",isOnline.toString() )
         when (exception) {
             is HandleExceptions.Network.Timeout,

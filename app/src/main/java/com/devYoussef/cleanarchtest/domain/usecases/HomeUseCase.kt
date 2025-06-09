@@ -10,17 +10,10 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class HomeUseCase @Inject constructor(
-    private val movieRepository: MovieRepository,
-    private val movieMapper: Mapper<MovieResponseDto, MovieResponse>
+    private val movieRepository: MovieRepository
 ) {
 
     suspend operator fun invoke(): Flow<Status<MovieResponse>> {
-        return movieRepository.getHomeMovies().map { status ->
-            when (status) {
-                is Status.Success -> Status.Success(movieMapper.from(status.data))
-                is Status.Failure -> Status.Failure(status.exception)
-                is Status.Loading -> Status.Loading(status.loading)
-            }
-        }
+        return movieRepository.getHomeMovies()
     }
 }

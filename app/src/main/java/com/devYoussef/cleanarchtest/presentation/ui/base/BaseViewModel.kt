@@ -27,7 +27,7 @@ abstract class BaseViewModel<T>(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false
+            initialValue = true
         )
 
 
