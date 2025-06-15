@@ -1,24 +1,15 @@
 package com.devYoussef.cleanarchtest.presentation
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.View
-import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.animation.doOnEnd
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.devYoussef.cleanarchtest.R
-import com.devYoussef.cleanarchtest.navigation.App
+import com.devYoussef.cleanarchtest.presentation.navigation.App
 import com.devYoussef.cleanarchtest.presentation.theme.CleanArchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

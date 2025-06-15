@@ -45,7 +45,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
-import com.devYoussef.cleanarchtest.navigation.Screens
+import com.devYoussef.cleanarchtest.presentation.navigation.Screens
 import com.devYoussef.cleanarchtest.presentation.ui.ExploreScreen
 import com.devYoussef.cleanarchtest.presentation.ui.home.HomeScreen
 
@@ -88,11 +88,11 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
         selectedItem = 0
     }
 
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            Log.e("MainScreen: ","resumed" )
-        }
-    }
+//    LaunchedEffect(lifecycleOwner) {
+//        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//            Log.e("MainScreen: ","resumed" )
+//        }
+//    }
 
     Scaffold(
 

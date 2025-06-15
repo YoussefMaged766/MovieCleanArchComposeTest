@@ -19,15 +19,27 @@ interface NetworkMonitor {
 class ConnectivityManagerNetworkMonitor @Inject constructor(
     private val connectivityManager: ConnectivityManager
 ) : NetworkMonitor {
+
     override val isOnline: Flow<Boolean> = callbackFlow {
+        // Emit initial network state
+        val isConnectedInitially = connectivityManager.activeNetwork?.let { network ->
+            connectivityManager.getNetworkCapabilities(network)
+                ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } == true
+
+        trySend(isConnectedInitially)
+
+        // Setup callback to listen for changes
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                Log.e( "onAvailable: ","avaliable" )
                 trySend(true)
             }
 
             override fun onLost(network: Network) {
-                Log.e( "onLost: ","onLost" )
+                trySend(false)
+            }
+
+            override fun onUnavailable() {
                 trySend(false)
             }
         }
@@ -42,6 +54,4 @@ class ConnectivityManagerNetworkMonitor @Inject constructor(
             connectivityManager.unregisterNetworkCallback(callback)
         }
     }.distinctUntilChanged()
-
-
 }

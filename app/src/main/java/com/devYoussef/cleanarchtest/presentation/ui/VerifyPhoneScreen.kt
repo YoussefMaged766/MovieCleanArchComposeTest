@@ -1,11 +1,7 @@
 package com.devYoussef.cleanarchtest.presentation.ui
 
 import android.util.Log
-import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.EaseInBounce
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -25,7 +21,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
 import com.devYoussef.cleanarchtest.common.custom_components.MovieTopAppBar
-import com.devYoussef.cleanarchtest.navigation.Screens
+import com.devYoussef.cleanarchtest.presentation.navigation.Screens
 
 @Composable
 fun VerifyPhoneScreen(

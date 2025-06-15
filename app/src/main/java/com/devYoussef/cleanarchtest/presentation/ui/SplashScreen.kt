@@ -30,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
-import com.devYoussef.cleanarchtest.navigation.Screens
+import com.devYoussef.cleanarchtest.presentation.navigation.Screens
 import kotlinx.coroutines.delay
 
 @Composable

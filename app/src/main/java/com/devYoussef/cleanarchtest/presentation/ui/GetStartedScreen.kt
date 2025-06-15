@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
-import com.devYoussef.cleanarchtest.navigation.Screens
+import com.devYoussef.cleanarchtest.presentation.navigation.Screens
 
 @Composable
 fun GetStartedScreen(modifier: Modifier = Modifier, mainNavController: NavController) {

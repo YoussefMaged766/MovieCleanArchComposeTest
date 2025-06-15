@@ -1,4 +1,4 @@
-package com.devYoussef.cleanarchtest.navigation
+package com.devYoussef.cleanarchtest.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
