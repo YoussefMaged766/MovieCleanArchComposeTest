@@ -120,6 +120,17 @@ sealed class HandleExceptions(@StringRes open val messageRes: Int? = null, messa
         ) : Client(null, errorMessage)
     }
 
+
+    /**
+     * Represents an exception that has reached the maximum retry limit.
+     * This exception is used to indicate that no further retries should be attempted.
+     */
+    class MaxRetryReachedException(
+        val errorMessage: String? = null
+    ) : HandleExceptions(null, errorMessage), Retryable {
+        override fun getRetryDelay(): Long = 0L // Or some appropriate value
+    }
+
     /**
      * Represents an unexpected HTTP exception with an unknown status code.
      */

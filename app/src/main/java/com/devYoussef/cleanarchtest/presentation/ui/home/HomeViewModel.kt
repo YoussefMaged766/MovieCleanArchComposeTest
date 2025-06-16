@@ -2,7 +2,9 @@ package com.devYoussef.cleanarchtest.presentation.ui.home
 
 
 import androidx.lifecycle.viewModelScope
+import com.devYoussef.cleanarchtest.common.model.exception.HandleExceptions.MaxRetryReachedException
 import com.devYoussef.cleanarchtest.common.model.state.Status
+import com.devYoussef.cleanarchtest.common.model.state.UiEffect
 import com.devYoussef.cleanarchtest.common.network.NetworkMonitor
 import com.devYoussef.cleanarchtest.domain.model.MovieResponse
 import com.devYoussef.cleanarchtest.domain.usecases.HomeUseCase
@@ -31,6 +33,17 @@ class HomeViewModel @Inject constructor(
        viewModelScope.launch {
            homeUseCase().collect { result ->
                _state.value = result
+
+               // Handle MaxRetryReachedException and show snackbar
+               if (result is Status.Failure && result.exception is MaxRetryReachedException) {
+                   emitEffect(
+                       UiEffect.ShowSnackbar(
+                           message = "Failed after multiple attempts. Please try again.",
+                           action = "Retry",
+                           onAction = { fetchHomeMovies() }
+                       )
+                   )
+               }
            }
        }
     }
