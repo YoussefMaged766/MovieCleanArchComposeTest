@@ -34,10 +34,9 @@ fun ConnectivityWrapper(
     onUnauthorized: (() -> Unit)? = null,
     onValidationError: ((Map<String, Int>) -> Unit)? = null,
     effect: SharedFlow<UiEffect>,
-    content: @Composable (PaddingValues) -> Unit
+    snackbarHostState: SnackbarHostState
 ) {
     val onlineStatus by isOnline.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -58,26 +57,35 @@ fun ConnectivityWrapper(
         }
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { paddingValues ->
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(color = colorResource(R.color.background))
-        ) {
-            content(paddingValues)
-            if (!onlineStatus) {
-                // Show offline snackbar only once
-                LaunchedEffect(Unit) {
-                    snackbarHostState.showSnackbar(
-                        message = context.getString(R.string.no_internet_connection),
-                        duration = SnackbarDuration.Short
-                    )
-                }
-            }
+    LaunchedEffect(onlineStatus) {
+        if (!onlineStatus) {
+            snackbarHostState.showSnackbar(
+                message = context.getString(R.string.no_internet_connection),
+                duration = SnackbarDuration.Short
+            )
         }
     }
+
+//    Scaffold(
+//        snackbarHost = { SnackbarHost(snackbarHostState) }
+//    ) { paddingValues ->
+//        Box(
+//            Modifier
+//                .fillMaxSize()
+//                .background(color = colorResource(R.color.background))
+//        ) {
+//            content(paddingValues)
+//            if (!onlineStatus) {
+//                // Show offline snackbar only once
+//                LaunchedEffect(Unit) {
+//                    snackbarHostState.showSnackbar(
+//                        message = context.getString(R.string.no_internet_connection),
+//                        duration = SnackbarDuration.Short
+//                    )
+//                }
+//            }
+//        }
+//    }
 
     // Exception handler logic
     LaunchedEffect(exception, onlineStatus) {

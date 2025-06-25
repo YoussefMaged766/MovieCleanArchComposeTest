@@ -44,6 +44,12 @@ sealed class HandleExceptions(@StringRes open val messageRes: Int? = null, messa
         ) : Network(messageRes, errorMessage), Retryable {
             override fun getRetryDelay() = 2000L
         }
+
+
+//        data class OfflineNetwork(
+//            @StringRes override val messageRes: Int = R.string.no_internet_connection,
+//            val errorMessage: String? = null
+//        ) : Network(messageRes, errorMessage)
     }
 
     // Server-related exceptions
