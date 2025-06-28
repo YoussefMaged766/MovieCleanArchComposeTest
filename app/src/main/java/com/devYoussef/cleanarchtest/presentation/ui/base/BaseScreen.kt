@@ -105,8 +105,8 @@ fun ConnectivityWrapper(
                             actionLabel = context.getString(R.string.retry)
                         )
                         if (result == SnackbarResult.ActionPerformed) {
-                            delay(it.getRetryDelay())
                             if (onlineStatus) {
+                                delay(it.getRetryDelay())
                                 onRetry?.invoke()
                             } else {
                                 snackbarHostState.showSnackbar(

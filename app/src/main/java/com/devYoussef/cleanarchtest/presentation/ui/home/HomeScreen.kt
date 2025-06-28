@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ContainedLoadingIndicator
@@ -65,9 +66,16 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val refreshState = rememberPullToRefreshState()
 
+    val isOnline  by viewModel.isOnline.collectAsState()
+
     val scaleFraction = {
         if (isRefreshing) 1f
         else LinearOutSlowInEasing.transform(refreshState.distanceFraction).coerceIn(0f, 1f)
+    }
+
+    LaunchedEffect(isOnline) {
+        Log.e( "HomeScreen: ",isOnline.toString() )
+        if (isOnline) viewModel.fetchHomeMovies()
     }
 
 
@@ -88,25 +96,32 @@ fun HomeScreen(
             state = refreshState,
             isRefreshing = isRefreshing,
             onRefresh = {
-                viewModel.fetchHomeMovies()
+                if (isOnline) viewModel.fetchHomeMovies()
                 isRefreshing = true
             }
         )
     ) {
 
-        Box(modifier = modifier.background(colorResource(R.color.background))) {
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(colorResource(R.color.background))
+                .verticalScroll(
+                    rememberScrollState()
+                )
+        ) {
 
-            LazyColumn(modifier = modifier.fillMaxSize()) {
-
-            }
+//            LazyColumn(modifier = modifier.fillMaxSize()) {
+//
+//            }
 
             Box(
                 Modifier
                     .align(Alignment.TopCenter)
-                    .graphicsLayer {
-                        scaleX = scaleFraction()
-                        scaleY = scaleFraction()
-                    }
+//                    .graphicsLayer {
+//                        scaleX = scaleFraction()
+//                        scaleY = scaleFraction()
+//                    }
             ) {
                 PullToRefreshDefaults.LoadingIndicator(
                     state = refreshState,

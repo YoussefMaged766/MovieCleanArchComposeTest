@@ -25,9 +25,7 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow<Status<MovieResponse>>(Status.Loading(true))
     val state: StateFlow<Status<MovieResponse>> = _state.asStateFlow()
 
-    init {
-        fetchHomeMovies()
-    }
+
 
      fun fetchHomeMovies() {
        viewModelScope.launch {
