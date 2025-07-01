@@ -61,27 +61,23 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
         MainNavigationData(
             title = "Home",
             icon = R.drawable.ic_home,
-            route = Screens.HomeScreen,
-            screen = { HomeScreen(mainNavController = navController) }
+            route = Screens.HomeScreen
         ),
         MainNavigationData(
             title = "Explore",
             icon = R.drawable.ic_explore,
-            route = Screens.ExploreScreen,
-            screen = { ExploreScreen(mainNavController = navController) }
+            route = Screens.ExploreScreen
         ),
         MainNavigationData(
             title = "Saved",
             icon = R.drawable.ic_saved,
-            route = Screens.HomeScreen,
-            screen = { /* TODO: Implement Profile Screen */ }
+            route = Screens.HomeScreen
         ),
 
         MainNavigationData(
             title = "Setting",
             icon = R.drawable.ic_setting,
-            route = Screens.HomeScreen,
-            screen = { /* TODO: Implement Profile Screen */ }
+            route = Screens.HomeScreen
         )
     )
 
@@ -108,7 +104,6 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
 //    }
 
     Scaffold(
-
         bottomBar = {
             BottomAppBar(
                 modifier = modifier
@@ -154,20 +149,6 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
             }
         }
 
-//        Column(
-//            modifier = modifier
-//                .fillMaxSize()
-//                .background(colorResource(R.color.background))
-//        ) {
-//            Box(
-//                modifier = modifier
-//                    .fillMaxSize()
-//                    .padding(innerPadding)
-//            ) {
-//                navItems[selectedItem].screen(mainNavController)
-//            }
-//
-//        }
     }
 }
 

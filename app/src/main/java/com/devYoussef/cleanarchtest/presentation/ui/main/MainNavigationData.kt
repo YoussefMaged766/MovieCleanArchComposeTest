@@ -7,6 +7,5 @@ import com.devYoussef.cleanarchtest.presentation.navigation.Screens
 data class MainNavigationData(
     val title: String,
     val icon: Int,
-    val route: Screens,
-    val screen: @Composable (navController: NavController) -> Unit
+    val route: Screens
 )
