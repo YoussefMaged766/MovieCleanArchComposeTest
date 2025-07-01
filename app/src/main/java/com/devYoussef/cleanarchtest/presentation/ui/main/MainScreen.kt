@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,6 +45,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.devYoussef.cleanarchtest.R
 import com.devYoussef.cleanarchtest.presentation.navigation.Screens
 import com.devYoussef.cleanarchtest.presentation.ui.ExploreScreen
@@ -51,42 +56,50 @@ import com.devYoussef.cleanarchtest.presentation.ui.home.HomeScreen
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
-
+    val navController = rememberNavController()
     val navItems = listOf<MainNavigationData>(
         MainNavigationData(
             title = "Home",
             icon = R.drawable.ic_home,
-            route = Screens.MainScreen,
-            screen = { HomeScreen(mainNavController = mainNavController) }
+            route = Screens.HomeScreen,
+            screen = { HomeScreen(mainNavController = navController) }
         ),
         MainNavigationData(
             title = "Explore",
             icon = R.drawable.ic_explore,
-            route = Screens.MainScreen,
-            screen = { ExploreScreen(mainNavController = mainNavController) }
+            route = Screens.ExploreScreen,
+            screen = { ExploreScreen(mainNavController = navController) }
         ),
         MainNavigationData(
             title = "Saved",
             icon = R.drawable.ic_saved,
-            route = Screens.MainScreen,
+            route = Screens.HomeScreen,
             screen = { /* TODO: Implement Profile Screen */ }
         ),
 
         MainNavigationData(
             title = "Setting",
             icon = R.drawable.ic_setting,
-            route = Screens.MainScreen,
+            route = Screens.HomeScreen,
             screen = { /* TODO: Implement Profile Screen */ }
         )
     )
 
-    var selectedItem by remember { mutableIntStateOf(0) }
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+
+
+    val selectedItem = remember(currentRoute) {
+        navItems.indexOfFirst { it.route::class.qualifiedName == currentRoute }
+            .takeIf { it != -1 } ?: 0
+    }
+
     val lifecycleOwner = LocalLifecycleOwner.current
 
 
-    BackHandler(enabled = selectedItem != 0) {
-        selectedItem = 0
-    }
+//    BackHandler(enabled = selectedItem != 0) {
+//        selectedItem = 0
+//    }
 
 //    LaunchedEffect(lifecycleOwner) {
 //        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -97,53 +110,67 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
     Scaffold(
 
         bottomBar = {
-            BottomAppBar(modifier = modifier, containerColor = colorResource(R.color.background)) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 25.dp)
-                        .clip(RoundedCornerShape(90.dp))
-                        .background(color = colorResource(R.color.orange))
-                ) {
-                    Row(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        navItems.forEachIndexed { index, item ->
-                            HomeNavItem(
-                                data = item,
-                                selected = selectedItem == index,
-                                onClick = {
-                                    selectedItem = index
+            BottomAppBar(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 25.dp)
+                    .clip(RoundedCornerShape(90.dp)),
+                containerColor = colorResource(R.color.orange),
+                actions = {
+                    navItems.forEachIndexed { index, item ->
+                        HomeNavItem(
+                            data = item,
+                            selected = index == selectedItem,
+                            onClick = {
+                                navController.navigate(item.route) {
+                                    // Avoid multiple copies of the same destination
+                                    popUpTo(Screens.HomeScreen) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                            )
-                        }
+
+                            }
+                        )
                     }
-                }
-            }
+                },
+            )
+
         },
         modifier = modifier.background(colorResource(R.color.background))
     ) { innerPadding ->
 
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(colorResource(R.color.background))
+        NavHost(
+            navController = navController,
+            startDestination = Screens.HomeScreen
         ) {
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                navItems[selectedItem].screen(mainNavController)
+            composable<Screens.HomeScreen> {
+                HomeScreen(mainNavController = navController)
             }
 
+            composable<Screens.ExploreScreen> {
+                ExploreScreen(mainNavController = navController)
+            }
         }
+
+//        Column(
+//            modifier = modifier
+//                .fillMaxSize()
+//                .background(colorResource(R.color.background))
+//        ) {
+//            Box(
+//                modifier = modifier
+//                    .fillMaxSize()
+//                    .padding(innerPadding)
+//            ) {
+//                navItems[selectedItem].screen(mainNavController)
+//            }
+//
+//        }
     }
 }
+
 
 @Composable
 fun HomeNavItem(
@@ -187,3 +214,4 @@ fun HomeNavItem(
         }
     }
 }
+

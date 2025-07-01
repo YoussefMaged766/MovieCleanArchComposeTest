@@ -118,6 +118,7 @@ fun HomeScreen(
             Box(
                 Modifier
                     .align(Alignment.TopCenter)
+
 //                    .graphicsLayer {
 //                        scaleX = scaleFraction()
 //                        scaleY = scaleFraction()

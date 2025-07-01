@@ -65,13 +65,7 @@ fun App(mainNavController: NavHostController) {
             MainScreen(mainNavController = mainNavController)
         }
 
-        composable<Screens.HomeScreen> {
-            HomeScreen(mainNavController = mainNavController)
-        }
 
-        composable<Screens.ExploreScreen> {
-            ExploreScreen(mainNavController = mainNavController)
-        }
     }
 
 }
