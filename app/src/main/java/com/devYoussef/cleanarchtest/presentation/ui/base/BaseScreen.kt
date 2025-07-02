@@ -61,7 +61,7 @@ fun ConnectivityWrapper(
         if (!onlineStatus) {
             snackbarHostState.showSnackbar(
                 message = context.getString(R.string.no_internet_connection),
-                duration = SnackbarDuration.Short
+                duration = SnackbarDuration.Indefinite
             )
         }
     }
@@ -111,7 +111,7 @@ fun ConnectivityWrapper(
                             } else {
                                 snackbarHostState.showSnackbar(
                                     message = context.getString(R.string.no_internet_connection),
-                                    withDismissAction = true
+                                    duration = SnackbarDuration.Indefinite
                                 )
                             }
                         }

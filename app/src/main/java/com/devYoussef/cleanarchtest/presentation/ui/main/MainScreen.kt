@@ -11,21 +11,43 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -81,9 +103,10 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
         )
     )
 
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
-
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val selectedItem = remember(currentRoute) {
         navItems.indexOfFirst { it.route::class.qualifiedName == currentRoute }
@@ -104,34 +127,60 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
 //    }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
+        },
         bottomBar = {
-            BottomAppBar(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp)
-                    .clip(RoundedCornerShape(90.dp)),
-                containerColor = colorResource(R.color.orange),
-                actions = {
+            Column {
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.DarkGray // Customize this color as needed
+                )
+
+                NavigationBar(
+                    windowInsets = NavigationBarDefaults.windowInsets,
+                    containerColor = colorResource(R.color.background),
+                ) {
                     navItems.forEachIndexed { index, item ->
-                        HomeNavItem(
-                            data = item,
+                        NavigationBarItem(
                             selected = index == selectedItem,
                             onClick = {
                                 navController.navigate(item.route) {
-                                    // Avoid multiple copies of the same destination
                                     popUpTo(Screens.HomeScreen) {
                                         saveState = true
                                     }
                                     launchSingleTop = true
                                     restoreState = true
                                 }
-
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Color(0xffCC6D00),
+                                unselectedIconColor = Color(0xff8c8c8c),
+                                selectedTextColor = Color(0xffCC6D00),
+                                unselectedTextColor = Color(0xff8c8c8c),
+                                indicatorColor = Color.Transparent
+                            ),
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = item.icon),
+                                    contentDescription = item.title,
+                                    tint = if (index == selectedItem) Color(0xffCC6D00) else Color(
+                                        0xff8c8c8c
+                                    ),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = item.title,
+                                    color = if (index == selectedItem) Color(0xffCC6D00) else Color(
+                                        0xff8c8c8c
+                                    )
+                                )
                             }
                         )
                     }
-                },
-            )
-
+                }
+            }
         },
         modifier = modifier.background(colorResource(R.color.background))
     ) { innerPadding ->
@@ -141,7 +190,7 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
             startDestination = Screens.HomeScreen
         ) {
             composable<Screens.HomeScreen> {
-                HomeScreen(mainNavController = navController)
+                HomeScreen(mainNavController = navController , snackbarHostState = snackbarHostState)
             }
 
             composable<Screens.ExploreScreen> {
@@ -195,4 +244,20 @@ fun HomeNavItem(
         }
     }
 }
+
+//HomeNavItem(
+//                            data = item,
+//                            selected = index == selectedItem,
+//                            onClick = {
+//                                navController.navigate(item.route) {
+//                                    // Avoid multiple copies of the same destination
+//                                    popUpTo(Screens.HomeScreen) {
+//                                        saveState = true
+//                                    }
+//                                    launchSingleTop = true
+//                                    restoreState = true
+//                                }
+//
+//                            }
+//                        )
 

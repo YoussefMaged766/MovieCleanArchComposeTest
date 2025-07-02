@@ -58,15 +58,16 @@ import com.devYoussef.cleanarchtest.presentation.ui.base.ConnectivityWrapper
 fun HomeScreen(
     modifier: Modifier = Modifier,
     mainNavController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState
 ) {
     val state = viewModel.state.collectAsState()
     val exception = (state.value as? Status.Failure)?.exception
     var isRefreshing by remember { mutableStateOf(false) }
-    val snackbarHostState = remember { SnackbarHostState() }
+
     val refreshState = rememberPullToRefreshState()
 
-    val isOnline  by viewModel.isOnline.collectAsState()
+    val isOnline by viewModel.isOnline.collectAsState()
 
     val scaleFraction = {
         if (isRefreshing) 1f
@@ -74,24 +75,18 @@ fun HomeScreen(
     }
 
     LaunchedEffect(isOnline) {
-        Log.e( "HomeScreen: ",isOnline.toString() )
+        Log.e("HomeScreen: ", isOnline.toString())
         if (isOnline) viewModel.fetchHomeMovies()
     }
 
 
 
-    ConnectivityWrapper(
-        isOnline = viewModel.isOnline,
-        exception = exception,
-        onRetry = { viewModel.fetchHomeMovies() },
-        effect = viewModel.uiEffect,
-        snackbarHostState = snackbarHostState
-    )
+
 
 
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+
         modifier = Modifier.pullToRefresh(
             state = refreshState,
             isRefreshing = isRefreshing,
@@ -100,65 +95,75 @@ fun HomeScreen(
                 isRefreshing = true
             }
         )
-    ) {
-
+    ) { innerPadding ->
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(colorResource(R.color.background))
+                .padding(innerPadding) // ✅ Required for snackbar to show
                 .verticalScroll(
                     rememberScrollState()
                 )
         ) {
+            ConnectivityWrapper(
+                isOnline = viewModel.isOnline,
+                exception = exception,
+                onRetry = { viewModel.fetchHomeMovies() },
+                effect = viewModel.uiEffect,
+                snackbarHostState = snackbarHostState
+            )
+
+
 
 //            LazyColumn(modifier = modifier.fillMaxSize()) {
 //
 //            }
 
-            Box(
-                Modifier
-                    .align(Alignment.TopCenter)
+                Box(
+                    Modifier
+                        .align(Alignment.TopCenter)
 
 //                    .graphicsLayer {
 //                        scaleX = scaleFraction()
 //                        scaleY = scaleFraction()
 //                    }
-            ) {
-                PullToRefreshDefaults.LoadingIndicator(
-                    state = refreshState,
-                    isRefreshing = isRefreshing
-                )
+                ) {
+                    PullToRefreshDefaults.LoadingIndicator(
+                        state = refreshState,
+                        isRefreshing = isRefreshing
+                    )
+                }
+
+
+
+            when (val status = state.value) {
+                is Status.Loading -> {
+
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.Center),
+                    )
+
+                }
+
+                is Status.Success -> {
+                    Log.e("HomeScreen: ", status.data.toString())
+                    isRefreshing = false
+                    Text(
+                        text = "home",
+                        color = Color.White,
+                        fontSize = 20.sp
+                    )
+
+
+                }
+
+                is Status.Failure -> {
+                    isRefreshing = false
+                }
             }
-        }
 
-
-        when (val status = state.value) {
-            is Status.Loading -> {
-
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center),
-                )
-
-            }
-
-            is Status.Success -> {
-                Log.e("HomeScreen: ", status.data.toString())
-                isRefreshing = false
-                Text(
-                    text = "home",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    modifier = modifier.padding(it)
-                )
-
-
-            }
-
-            is Status.Failure -> {
-                isRefreshing = false
-            }
         }
 
 
