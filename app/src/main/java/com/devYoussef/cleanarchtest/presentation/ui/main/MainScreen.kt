@@ -190,7 +190,9 @@ fun MainScreen(modifier: Modifier = Modifier, mainNavController: NavController) 
             startDestination = Screens.HomeScreen
         ) {
             composable<Screens.HomeScreen> {
-                HomeScreen(mainNavController = navController , snackbarHostState = snackbarHostState)
+                HomeScreen(mainNavController = navController , snackbarHostState = snackbarHostState ,
+                    innerPadding = innerPadding
+                )
             }
 
             composable<Screens.ExploreScreen> {

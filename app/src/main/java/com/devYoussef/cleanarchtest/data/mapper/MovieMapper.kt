@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.data.mapper
 
+import com.devYoussef.cleanarchtest.common.constants.Constants
 import com.devYoussef.cleanarchtest.common.interfaces.Mapper
 import com.devYoussef.cleanarchtest.data.dto.MovieDto
 import com.devYoussef.cleanarchtest.domain.model.Movie
@@ -10,7 +11,7 @@ class MovieMapper @Inject constructor() : Mapper<MovieDto, Movie> {
         return Movie(
             id = i?.id ?: 0,
             title = i?.title ?: "",
-            imagePath = i?.backdrop_path ?: ""
+            imagePath = "${Constants.BASE_IMAGES_URL}${i?.backdrop_path ?: ""}"
         )
     }
 
