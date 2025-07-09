@@ -6,13 +6,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.devYoussef.cleanarchtest.presentation.ui.ExploreScreen
 import com.devYoussef.cleanarchtest.presentation.ui.ForgetPasswordScreen
 import com.devYoussef.cleanarchtest.presentation.ui.GetStartedScreen
-import com.devYoussef.cleanarchtest.presentation.ui.home.HomeScreen
 import com.devYoussef.cleanarchtest.presentation.ui.main.MainScreen
 import com.devYoussef.cleanarchtest.presentation.ui.IntroScreen
-import com.devYoussef.cleanarchtest.presentation.ui.SignInScreen
+import com.devYoussef.cleanarchtest.presentation.ui.login.SignInScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SignUpScreen
 import com.devYoussef.cleanarchtest.presentation.ui.onboarding.OnBoardingScreen
 import com.devYoussef.cleanarchtest.presentation.ui.SplashScreen

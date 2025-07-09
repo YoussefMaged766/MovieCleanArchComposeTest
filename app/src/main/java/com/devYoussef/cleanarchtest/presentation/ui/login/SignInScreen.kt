@@ -1,5 +1,6 @@
-package com.devYoussef.cleanarchtest.presentation.ui
+package com.devYoussef.cleanarchtest.presentation.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -31,9 +32,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,23 +66,59 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.devYoussef.cleanarchtest.R
 import com.devYoussef.cleanarchtest.presentation.navigation.Screens
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController) {
-    var emailValueState by remember { mutableStateOf(TextFieldValue("")) }
+fun SignInScreen(
+    modifier: Modifier = Modifier,
+    mainNavController: NavController,
+    viewModel: SignInViewModel = hiltViewModel()
+) {
+
     var isFocusedEmail by remember { mutableStateOf(false) }
     val focusRequesterEmail = remember { FocusRequester() }
 
     var isFocusedPassword by remember { mutableStateOf(false) }
     val focusRequesterPassword = remember { FocusRequester() }
     var passwordVisible by remember { mutableStateOf(false) }
-    var passwordValueState by remember { mutableStateOf(TextFieldValue("")) }
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+
+
+    val password = viewModel.password.collectAsStateWithLifecycle()
+    val email = viewModel.email.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
+
+//    LaunchedEffect(Unit) {
+//        viewModel.uiEvent.collectLatest { event ->
+//            when (event) {
+//                is SignInViewModel.SignInEvent.ValidationError -> {
+//                    emailError = event.emailError
+//                    passwordError = event.passwordError
+//
+//                }
+//
+//                is SignInViewModel.SignInEvent.ShowError -> {
+//                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+//                }
+//
+//                is SignInViewModel.SignInEvent.NavigateToMain -> {
+//                    mainNavController.navigate(Screens.MainScreen) {
+//                        popUpTo(Screens.MainScreen) { inclusive = true }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     Scaffold() { innerPadding ->
         Column(
@@ -132,7 +171,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                     modifier = Modifier
                         .padding(16.dp, vertical = 20.dp)
                         .align(Alignment.CenterVertically),
-                    tint = if (isFocusedEmail || emailValueState.text.isNotEmpty()) Color.White else colorResource(
+                    tint = if (isFocusedEmail || emailError != null) Color.White else colorResource(
                         id = R.color.grey
                     )
                 )
@@ -145,8 +184,8 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                 )
 
                 TextField(
-                    value = emailValueState,
-                    onValueChange = { emailValueState = it },
+                    value = TextFieldValue(text = email.value),
+                    onValueChange = { viewModel.onEmailChange(it.text)},
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
@@ -182,14 +221,14 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                         )
                     ),
                     trailingIcon = {
-                        if (emailValueState.text.isNotEmpty()) {
+                        if (email.value.isNotEmpty()) {
                             IconButton(
-                                onClick = { emailValueState = TextFieldValue("") },
+                                onClick = { viewModel.clearEmail() },
                                 content = {
                                     Icon(
                                         Icons.Filled.Clear,
                                         contentDescription = null,
-                                        tint = if (isFocusedEmail || emailValueState.text.isNotEmpty()) Color.White else colorResource(
+                                        tint = if (isFocusedEmail || emailError != null) Color.White else colorResource(
                                             id = R.color.grey
                                         )
                                     )
@@ -216,7 +255,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                     modifier = Modifier
                         .padding(16.dp, vertical = 20.dp)
                         .align(Alignment.CenterVertically),
-                    tint = if (isFocusedPassword || passwordValueState.text.isNotEmpty()) Color.White else colorResource(
+                    tint = if (isFocusedPassword || passwordError != null) Color.White else colorResource(
                         R.color.grey
                     )
                 )
@@ -229,8 +268,8 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                 )
 
                 TextField(
-                    value = passwordValueState,
-                    onValueChange = { passwordValueState = it },
+                    value = password.value,
+                    onValueChange = { viewModel.onPasswordChange(it) },
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
@@ -276,7 +315,7 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
                                 Icon(
                                     if (passwordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
                                     contentDescription = null,
-                                    tint = if (isFocusedPassword || passwordValueState.text.isNotEmpty()) Color.White else colorResource(
+                                    tint = if (isFocusedPassword || password.value.isNotEmpty()) Color.White else colorResource(
                                         id = R.color.grey
                                     )
                                 )
@@ -309,7 +348,8 @@ fun SignInScreen(modifier: Modifier = Modifier, mainNavController: NavController
 
             Button(
                 onClick = {
-                   mainNavController.navigate(Screens.MainScreen)
+                    viewModel::onSignInClick
+                    keyboardController?.hide()
                 },
                 modifier = Modifier
                     .padding(start = 20.dp, end = 20.dp)
