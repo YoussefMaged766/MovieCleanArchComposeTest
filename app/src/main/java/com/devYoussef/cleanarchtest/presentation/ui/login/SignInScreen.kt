@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.presentation.ui.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -98,27 +99,29 @@ fun SignInScreen(
 
     val context = LocalContext.current
 
-//    LaunchedEffect(Unit) {
-//        viewModel.uiEvent.collectLatest { event ->
-//            when (event) {
-//                is SignInViewModel.SignInEvent.ValidationError -> {
-//                    emailError = event.emailError
-//                    passwordError = event.passwordError
-//
-//                }
-//
-//                is SignInViewModel.SignInEvent.ShowError -> {
-//                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-//                }
-//
-//                is SignInViewModel.SignInEvent.NavigateToMain -> {
-//                    mainNavController.navigate(Screens.MainScreen) {
-//                        popUpTo(Screens.MainScreen) { inclusive = true }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(Unit) {
+
+        viewModel.uiEvent.collectLatest { event ->
+            Log.e( "SignInScreen: ",event.toString() )
+            when (event) {
+
+                is SignInViewModel.SignInEvent.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is SignInViewModel.SignInEvent.NavigateToMain -> {
+                    mainNavController.navigate(Screens.MainScreen) {
+                        Log.e( "SignInScreen: ",mainNavController.graph.startDestinationRoute.toString() )
+                        popUpTo(Screens.IntroScreen) {
+                            inclusive = true
+                        }
+
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
+    }
 
     Scaffold() { innerPadding ->
         Column(
@@ -184,8 +187,8 @@ fun SignInScreen(
                 )
 
                 TextField(
-                    value = TextFieldValue(text = email.value),
-                    onValueChange = { viewModel.onEmailChange(it.text)},
+                    value =  email.value,
+                    onValueChange = { viewModel.onEmailChange(it)},
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
@@ -348,7 +351,7 @@ fun SignInScreen(
 
             Button(
                 onClick = {
-                    viewModel::onSignInClick
+                    viewModel.onSignInClick()
                     keyboardController?.hide()
                 },
                 modifier = Modifier
