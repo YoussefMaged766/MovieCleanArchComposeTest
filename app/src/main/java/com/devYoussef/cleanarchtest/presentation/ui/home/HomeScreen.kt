@@ -19,8 +19,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,6 +48,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +64,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil3.ImageLoader
 import coil3.compose.AsyncImage
@@ -80,14 +85,20 @@ fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     innerPadding: PaddingValues
 ) {
-    val state by viewModel.state.collectAsState()
-    val isOnline by viewModel.isOnline.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(false) }
     val refreshState = rememberPullToRefreshState()
 
-    LaunchedEffect(isOnline) {
-        if (isOnline) viewModel.fetchHomeMovies()
-    }
+    // ✅ Save scroll state across recompositions
+    val listState = rememberLazyGridState(
+        initialFirstVisibleItemIndex = 0,
+        initialFirstVisibleItemScrollOffset = 0
+    )
+
+//    LaunchedEffect(isOnline) {
+//        if (isOnline) viewModel.fetchHomeMovies()
+//    }
 
     Scaffold(modifier = modifier) { _ ->
         Box(
@@ -112,7 +123,8 @@ fun HomeScreen(
                 },
                 onRefreshCompleted = { isRefreshing = false },
                 refreshState = refreshState,
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                listState = listState
             )
         }
     }
@@ -122,6 +134,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     state: Status<MovieResponse>,
+    listState: LazyGridState,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onRefreshCompleted: () -> Unit,
@@ -137,13 +150,12 @@ fun HomeContent(
         when (state) {
             is Status.Loading -> {
                 // Optionally show empty grid for gesture support
-                MovieGrid(
-                    movies = emptyList(),
-                    innerPadding = innerPadding,
-                    isRefreshing = isRefreshing,
-                    refreshState = refreshState,
-                    onRefresh = onRefresh
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
                 )
+
             }
 
             is Status.Success -> {
@@ -153,7 +165,8 @@ fun HomeContent(
                     innerPadding = innerPadding,
                     isRefreshing = isRefreshing,
                     refreshState = refreshState,
-                    onRefresh = onRefresh
+                    onRefresh = onRefresh,
+                    listState = listState
                 )
             }
 
@@ -165,7 +178,8 @@ fun HomeContent(
                     innerPadding = innerPadding,
                     isRefreshing = isRefreshing,
                     refreshState = refreshState,
-                    onRefresh = onRefresh
+                    onRefresh = onRefresh,
+                    listState = listState
                 )
             }
         }
@@ -191,10 +205,12 @@ fun MovieGrid(
     innerPadding: PaddingValues,
     isRefreshing: Boolean,
     refreshState: PullToRefreshState,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    listState: LazyGridState
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
+        state = listState,
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)

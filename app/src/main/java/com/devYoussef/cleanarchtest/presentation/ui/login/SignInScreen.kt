@@ -111,7 +111,6 @@ fun SignInScreen(
 
                 is SignInViewModel.SignInEvent.NavigateToMain -> {
                     mainNavController.navigate(Screens.MainScreen) {
-                        Log.e( "SignInScreen: ",mainNavController.graph.startDestinationRoute.toString() )
                         popUpTo(Screens.IntroScreen) {
                             inclusive = true
                         }
@@ -164,7 +163,7 @@ fun SignInScreen(
                     .padding(start = 20.dp, end = 20.dp, top = 100.dp)
                     .clip(RoundedCornerShape(25.dp))
                     .background(Color(0xFF2B2B2B))
-                    .height(IntrinsicSize.Min) // Makes Row height wrap its content
+                    .height(IntrinsicSize.Min)
                     .fillMaxWidth()
 
             ) {
@@ -180,7 +179,7 @@ fun SignInScreen(
                 )
                 VerticalDivider(
                     modifier = Modifier
-                        .fillMaxHeight() // Now it fills height of Row, which is based on content
+                        .fillMaxHeight()
                         .width(1.dp)
                         .padding(vertical = 20.dp),
                     color = colorResource(id = R.color.grey)
