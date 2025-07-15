@@ -81,10 +81,10 @@ import com.devYoussef.cleanarchtest.presentation.ui.base.ConnectivityWrapper
 fun HomeScreen(
     modifier: Modifier = Modifier,
     mainNavController: NavController,
-    viewModel: HomeViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState,
     innerPadding: PaddingValues
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(false) }

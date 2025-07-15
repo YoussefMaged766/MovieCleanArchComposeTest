@@ -1,5 +1,6 @@
 package com.devYoussef.cleanarchtest.data.remote
 
+import com.devYoussef.cleanarchtest.data.dto.GenresResponseDto
 import com.devYoussef.cleanarchtest.data.dto.MovieResponseDto
 import com.devYoussef.cleanarchtest.data.remote.api.ApiService
 import com.devYoussef.cleanarchtest.data.remote.source.RemoteMovieDataSource
@@ -10,5 +11,9 @@ class RemoteDataSourceImpl @Inject constructor(private val apiService: ApiServic
     RemoteMovieDataSource {
     override suspend fun getHomeMovies(): Response<MovieResponseDto> {
         return apiService.getHomeMovies()
+    }
+
+    override suspend fun getMovieGenres(): Response<GenresResponseDto> {
+        return apiService.getMovieGenres()
     }
 }

@@ -1,10 +1,13 @@
 package com.devYoussef.cleanarchtest.di
 
 import com.devYoussef.cleanarchtest.common.interfaces.Mapper
+import com.devYoussef.cleanarchtest.data.dto.GenresResponseDto
 import com.devYoussef.cleanarchtest.data.dto.MovieDto
 import com.devYoussef.cleanarchtest.data.dto.MovieResponseDto
+import com.devYoussef.cleanarchtest.data.mapper.GenresResponseMapper
 import com.devYoussef.cleanarchtest.data.mapper.MovieMapper
 import com.devYoussef.cleanarchtest.data.mapper.MovieResponseMapper
+import com.devYoussef.cleanarchtest.domain.model.GenresResponse
 import com.devYoussef.cleanarchtest.domain.model.Movie
 import com.devYoussef.cleanarchtest.domain.model.MovieResponse
 import dagger.Binds
@@ -22,4 +25,7 @@ abstract class MapperModule {
 
     @Binds
     abstract fun bindMovieMapper(mapper: MovieMapper): Mapper<MovieDto, Movie>
+
+    @Binds
+    abstract  fun bindGenresMapper(mapper: GenresResponseMapper): Mapper<GenresResponseDto, GenresResponse>
 }
